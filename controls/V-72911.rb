@@ -108,7 +108,7 @@ control "V-72911" do
   object_acl = "^(((#{pg_owner}=[#{pg_object_granted_privileges}]+|"\
     "=[#{pg_object_public_privileges}]+)\\/\\w+,?)+|)$"
   schemas = ['pg_catalog', 'information_schema']
-  sql = postgres_session(pg_dba, pg_dba_password, pg_host)
+  sql = postgres_session(pg_dba, pg_dba_password, pg_host, pg_port)
 
   schemas.each do |schema|
     objects_sql = "SELECT n.nspname, c.relname, c.relkind, "\

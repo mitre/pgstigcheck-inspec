@@ -133,7 +133,7 @@ control "V-72847" do
   $ chmod 0700 <log directory name>
   $ chmod 0600 <log directory name>/*.log"
 
-  sql = postgres_session(pg_dba, pg_dba_password, pg_host)
+  sql = postgres_session(pg_dba, pg_dba_password, pg_host, pg_port)
 
   describe sql.query('SHOW log_file_mode;', [pg_db]) do
     its('output') { should cmp '0600'}

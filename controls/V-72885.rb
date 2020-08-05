@@ -140,7 +140,7 @@ control "V-72885" do
   $ chmod 0700 <log directory name>
   $ chmod 0600 <log directory name>/*.log"
     
-  sql = postgres_session(pg_dba, pg_dba_password, pg_host)
+  sql = postgres_session(pg_dba, pg_dba_password, pg_host, pg_port)
    
   describe sql.query('show logging_collector;', [pg_db]) do
     its('output') { should_not match /off|false/i }

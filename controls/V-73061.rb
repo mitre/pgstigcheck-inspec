@@ -96,7 +96,7 @@ $ chmod 0600 ${PGDATA?}/*.conf"
     its('mode') { should cmp '0600' }
   end
 
-  sql = postgres_session(pg_dba, pg_dba_password, pg_host)
+  sql = postgres_session(pg_dba, pg_dba_password, pg_host, pg_port)
 
   log_destination_query = sql.query('SHOW log_destination;', [pg_db])
   log_destination = log_destination_query.output

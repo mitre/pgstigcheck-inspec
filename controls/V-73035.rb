@@ -76,7 +76,7 @@ control "V-73035" do
   INSERT INTO accounts(username, password) VALUES ('bob',
   crypt('a_secure_password', gen_salt('md5')));"
 
-  sql = postgres_session(pg_dba, pg_dba_password, pg_host)
+  sql = postgres_session(pg_dba, pg_dba_password, pg_host, pg_port)
 
   pgcrypto_sql = "SELECT * FROM pg_available_extensions where name='pgcrypto'"
 

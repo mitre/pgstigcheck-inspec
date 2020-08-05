@@ -88,7 +88,7 @@ control "V-72851" do
 
   default = postgres_conf(pg_conf_file)
   override = postgres_conf(pg_user_defined_conf)
-  sql = postgres_session(pg_dba, pg_dba_password, pg_host)
+  sql = postgres_session(pg_dba, pg_dba_password, pg_host, pg_port)
 
   describe sql.query('SHOW client_min_messages;', [pg_db]) do
    its('output') { should match /^error$/i }

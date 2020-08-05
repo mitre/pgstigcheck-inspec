@@ -65,7 +65,7 @@ control "V-73031" do
   content APPENDIX-G."
 
 
-  sql = postgres_session(pg_dba, pg_dba_password, pg_host)
+  sql = postgres_session(pg_dba, pg_dba_password, pg_host, pg_port)
 
   describe sql.query('SHOW ssl_ca_file;', [pg_db]) do
     its('output') { should_not eq '' }

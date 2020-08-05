@@ -79,7 +79,7 @@ control "V-72887" do
   # INITD SERVER ONLY 
   $ sudo service postgresql-${PGVER?} reload"
 
-  sql = postgres_session(pg_dba, pg_dba_password, pg_host)
+  sql = postgres_session(pg_dba, pg_dba_password, pg_host, pg_port)
 
   describe sql.query('SHOW log_timezone;', [pg_db]) do
     its('output') { should eq pg_timezone }

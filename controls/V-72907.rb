@@ -76,7 +76,7 @@ control "V-72907" do
 
   #Execute an incorrectly-formed SQL statement with bad syntax, to prompt log ouput
 
-  sql = postgres_session(pg_dba, pg_dba_password, pg_host)
+  sql = postgres_session(pg_dba, pg_dba_password, pg_host, pg_port)
 
   describe sql.query('CREAT TABLE incorrect_syntax2(id INT);', [pg_db]) do
     its('output') { should match // }     

@@ -76,7 +76,7 @@ control "V-72867" do
   https://www.postgresql.org/docs/current/static/sql-createrole.html"
 
 
-  sql = postgres_session(pg_dba, pg_dba_password, pg_host)
+  sql = postgres_session(pg_dba, pg_dba_password, pg_host, pg_port)
 
   authorized_roles = pg_superusers
 

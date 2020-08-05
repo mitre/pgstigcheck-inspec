@@ -80,7 +80,7 @@ control "V-72897" do
   $ psql -c \"ALTER SCHEMA test OWNER TO bob\""
 
 
-  sql = postgres_session(pg_dba, pg_dba_password, pg_host)
+  sql = postgres_session(pg_dba, pg_dba_password, pg_host, pg_port)
 
   authorized_owners = pg_superusers
 

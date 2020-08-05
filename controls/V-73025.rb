@@ -153,7 +153,7 @@ control "V-73025" do
     public.stig_audit_example FROM auditor;\""
   
 
-  sql = postgres_session(pg_dba, pg_dba_password, pg_host)
+  sql = postgres_session(pg_dba, pg_dba_password, pg_host, pg_port)
 
   describe sql.query('SHOW shared_preload_libraries;', [pg_db]) do
     its('output') { should include 'pgaudit' }

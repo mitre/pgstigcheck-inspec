@@ -95,7 +95,7 @@ control "V-72961" do
   $ sudo service postgresql-${PGVER?} reload"
 
 
-  sql = postgres_session(pg_dba, pg_dba_password, pg_host)
+  sql = postgres_session(pg_dba, pg_dba_password, pg_host, pg_port)
 
   describe sql.query('SHOW log_connections;', [pg_db]) do
     its('output') { should_not match /off|false/i }

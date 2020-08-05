@@ -88,7 +88,7 @@ control "V-72991" do
 
   Deploy NSA-approved encrypting devices to protect the server on the network."
 
-  sql = postgres_session(pg_dba, pg_dba_password, pg_host)
+  sql = postgres_session(pg_dba, pg_dba_password, pg_host, pg_port)
 
   describe sql.query('SHOW ssl;', [pg_db]) do
     its('output') { should match /on|true/i }
