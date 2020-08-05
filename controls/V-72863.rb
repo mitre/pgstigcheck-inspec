@@ -106,7 +106,7 @@ control "V-72863" do
   $ psql -c \"ALTER ROLE <rolname> CONNECTION LIMIT 1\";"
 
 
-  sql = postgres_session(pg_dba, pg_dba_password, pg_host)
+  sql = postgres_session(pg_dba, pg_dba_password, pg_host, pg_port)
 
   describe sql.query('SHOW max_connections;', [pg_db]) do
     its('output') { should be <= pg_max_connections }

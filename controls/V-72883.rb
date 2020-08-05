@@ -106,7 +106,7 @@ control "V-72883" do
   $ psql -c \"REVOKE SELECT ON TABLE test.test_table FROM bob\"
   $ psql -c \"REVOKE CREATE ON SCHEMA test FROM bob\""
 
-  sql = postgres_session(pg_dba, pg_dba_password, pg_host)
+  sql = postgres_session(pg_dba, pg_dba_password, pg_host, pg_port)
 
   authorized_owners = pg_superusers
 

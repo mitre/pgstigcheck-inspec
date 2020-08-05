@@ -75,7 +75,7 @@ control "V-73017" do
   $ psql -c \"REVOKE ALL PRIVILEGES ON <table> FROM <role_name>\""
 
 
-  sql = postgres_session(pg_dba, pg_dba_password, pg_host)
+  sql = postgres_session(pg_dba, pg_dba_password, pg_host, pg_port)
 
   roles_sql = 'SELECT r.rolname FROM pg_catalog.pg_roles r;'
   roles_query = sql.query(roles_sql, [pg_db])

@@ -1,3 +1,4 @@
+
 pg_ver = input('pg_version')
 
 pg_dba = input('pg_dba')
@@ -89,8 +90,8 @@ control "V-72841" do
 
 	$ psql -p 5432 -c \"SHOW port\"
 	$ export PGPORT=5432"
-
-  sql = postgres_session(pg_dba, pg_dba_password, pg_host)
+  sql = postgres_session(pg_dba, pg_dba_password, pg_host, pg_port)
+  
 
   describe sql.query('SHOW port;', [pg_db]) do
     its('output') { should eq pg_port }

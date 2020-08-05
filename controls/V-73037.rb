@@ -92,7 +92,7 @@ control "V-73037" do
   # INITD SERVER ONLY 
   $ sudo service postgresql-${PGVER?} restart"
 
-  sql = postgres_session(pg_dba, pg_dba_password, pg_host)
+  sql = postgres_session(pg_dba, pg_dba_password, pg_host, pg_port)
 
   describe sql.query('SHOW tcp_keepalives_idle;', [pg_db]) do
     its('output') { should_not cmp 0 }

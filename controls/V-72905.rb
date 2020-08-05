@@ -83,7 +83,7 @@ control "V-72905" do
   $ sudo su - postgres 
   $ psql -c \"ALTER FUNCTION <function_name> SECURITY INVOKER\""
 
-  sql = postgres_session(pg_dba, pg_dba_password, pg_host)
+  sql = postgres_session(pg_dba, pg_dba_password, pg_host, pg_port)
 
   security_definer_sql = "SELECT nspname, proname, prosecdef "\
     "FROM pg_proc p JOIN pg_namespace n ON p.pronamespace = n.oid "\

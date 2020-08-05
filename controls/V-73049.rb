@@ -111,7 +111,7 @@ control "V-73049" do
   For more information on pg_hba.conf, see the official documentation:
   https://www.postgresql.org/docs/current/static/auth-pg-hba-conf.html"
 
-  sql = postgres_session(pg_dba, pg_dba_password, pg_host)
+  sql = postgres_session(pg_dba, pg_dba_password, pg_host, pg_port)
 
   authorized_roles = pg_users
 

@@ -92,7 +92,7 @@ control "V-73123" do
   # INITD SERVER ONLY
   $ sudo service postgresql-9.5 reload"
 
-  sql = postgres_session(pg_dba, pg_dba_password, pg_host)
+  sql = postgres_session(pg_dba, pg_dba_password, pg_host, pg_port)
 
   log_line_prefix_escapes = %w(%m %u %d %s)
 
