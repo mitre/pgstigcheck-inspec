@@ -94,7 +94,7 @@ control "V-72841" do
   
 
   describe sql.query('SHOW port;', [pg_db]) do
-    its('output') { should eq pg_port }
+    its('output') { should eq input('pg_port') }
   end
 
   if virtualization.system == 'docker'
