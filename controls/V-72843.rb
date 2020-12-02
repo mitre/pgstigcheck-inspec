@@ -143,7 +143,7 @@ pg_host = input('pg_host')
     # INITD SERVER ONLY
     $ sudo service postgresql-${PGVER?} reload"
 
-    sql = postgres_session(pg_dba, pg_dba_password, pg_host, pg_port)    
+    sql = postgres_session(pg_dba, pg_dba_password, pg_host, input('pg_port'))    
 
     describe sql.query('DROP TABLE IF EXISTS stig_test;', [pg_db]) do
       its('output') { should eq 'DROP TABLE' }

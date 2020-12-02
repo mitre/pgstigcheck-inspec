@@ -105,7 +105,7 @@ control "V-73029" do
   For more information on configuring PostgreSQL to use SSL, see supplementary
   content APPENDIX-G."
 
-  sql = postgres_session(pg_dba, pg_dba_password, pg_host, pg_port)
+  sql = postgres_session(pg_dba, pg_dba_password, pg_host, input('pg_port'))
 
   settings = %w(ssl_cert_file ssl_key_file ssl_ca_file ssl_crl_file)
 

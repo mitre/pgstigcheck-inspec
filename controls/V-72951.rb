@@ -112,7 +112,7 @@ control "V-72951" do
   is enabled, review supplementary content APPENDIX-C for instructions on
   enabling logging."
 
-    sql = postgres_session(pg_dba, pg_dba_password, pg_host, pg_port)
+    sql = postgres_session(pg_dba, pg_dba_password, pg_host, input('pg_port'))
 
     describe sql.query('DROP TABLE IF EXISTS test_schema.test_table;', [pg_db]) do
       its('output') { should eq 'DROP TABLE' }

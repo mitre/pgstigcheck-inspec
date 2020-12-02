@@ -73,7 +73,7 @@ control "V-72977" do
   is enabled, review supplementary content APPENDIX-C for instructions on
   enabling logging."
 
-  sql = postgres_session(pg_dba, pg_dba_password, pg_host, pg_port)
+  sql = postgres_session(pg_dba, pg_dba_password, pg_host, input('pg_port'))
   
   describe sql.query('DROP ROLE IF EXISTS bob; CREATE ROLE bob; CREATE TABLE test(id INT);', [pg_db]) do
     its('output') { should match /CREATE TABLE/ }

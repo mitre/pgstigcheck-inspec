@@ -78,7 +78,7 @@ control "V-72955" do
   # INITD SERVER ONLY 
   $ sudo service postgresql-${PGVER?} reload"
 
-  sql = postgres_session(pg_dba, pg_dba_password, pg_host, pg_port)
+  sql = postgres_session(pg_dba, pg_dba_password, pg_host, input('pg_port'))
 
   pgaudit_types = %w(ddl role write)
 

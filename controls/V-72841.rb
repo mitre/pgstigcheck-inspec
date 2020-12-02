@@ -90,7 +90,7 @@ control "V-72841" do
 
 	$ psql -p 5432 -c \"SHOW port\"
 	$ export PGPORT=5432"
-  sql = postgres_session(pg_dba, pg_dba_password, pg_host, pg_port)
+  sql = postgres_session(pg_dba, pg_dba_password, pg_host, input('pg_port'))
   
 
   describe sql.query('SHOW port;', [pg_db]) do
@@ -103,7 +103,7 @@ control "V-72841" do
 	end
 
   else
-    describe port(pg_port) do
+    describe port(input('pg_port')) do
       it { should be_listening }
       its('processes') { should include 'postgres' }
 	end

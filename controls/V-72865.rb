@@ -80,7 +80,7 @@ control "V-72865" do
   ALTER ROLE bob NOINHERIT;
   REVOKE SELECT ON some_function FROM bob;"
 
-  sql = postgres_session(pg_dba, pg_dba_password, pg_host, pg_port)
+  sql = postgres_session(pg_dba, pg_dba_password, pg_host, input('pg_port'))
 
   authorized_owners = pg_superusers
   owners = authorized_owners.join('|')

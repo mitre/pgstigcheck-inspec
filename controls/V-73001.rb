@@ -56,7 +56,7 @@ control "V-73001" do
   For session logging we suggest using pgaudit. For instructions on how to setup
   pgaudit, see supplementary content APPENDIX-B."
   
-  sql = postgres_session(pg_dba, pg_dba_password, pg_host, pg_port)
+  sql = postgres_session(pg_dba, pg_dba_password, pg_host, input('pg_port'))
 
   describe sql.query('SHOW shared_preload_libraries;', [pg_db]) do
     its('output') { should include 'pgaudit' }

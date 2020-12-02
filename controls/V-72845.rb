@@ -92,7 +92,7 @@ control "V-72845" do
   desc "fix", "Institute and adhere to policies and procedures to ensure that
   patches are consistently applied to PostgreSQL within the time allowed."
 
-  sql = postgres_session(pg_dba, pg_dba_password, pg_host, pg_port)
+  sql = postgres_session(pg_dba, pg_dba_password, pg_host, input('pg_port'))
 
   describe sql.query('SHOW server_version;', [pg_db]) do
     its('output') { should cmp pg_version}

@@ -109,7 +109,7 @@ control "V-72953" do
   $ sudo service postgresql-${PGVER?} reload"
 
 
-  sql = postgres_session(pg_dba, pg_dba_password, pg_host, pg_port)
+  sql = postgres_session(pg_dba, pg_dba_password, pg_host, input('pg_port'))
 
   describe sql.query('SHOW shared_preload_libraries;', [pg_db]) do
     its('output') { should include 'pgaudit' }

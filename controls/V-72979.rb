@@ -121,7 +121,7 @@ control "V-72979" do
   # INITD SERVER ONLY 
   $ sudo service postgresql-${PGVER?} reload"
 
-  sql = postgres_session(pg_dba, pg_dba_password, pg_host, pg_port)
+  sql = postgres_session(pg_dba, pg_dba_password, pg_host, input('pg_port'))
 
   ssl_crl_file_query = sql.query('SHOW ssl_crl_file;', [pg_db])
 

@@ -121,7 +121,7 @@ control "V-73033" do
   # INITD SERVER ONLY 
   $ sudo service postgresql-${PGVER?} reload"
   
-  sql = postgres_session(pg_dba, pg_dba_password, pg_host, pg_port)
+  sql = postgres_session(pg_dba, pg_dba_password, pg_host, input('pg_port'))
 
   log_line_prefix_escapes = %w(%m %u %d %s)
   log_line_prefix_escapes.each do |escape|

@@ -129,7 +129,7 @@ control "V-73039" do
     it { should be_grouped_into pg_group }
   end 
 
-  sql = postgres_session(pg_dba, pg_dba_password, pg_host, pg_port)
+  sql = postgres_session(pg_dba, pg_dba_password, pg_host, input('pg_port'))
 
   roles_sql = 'SELECT r.rolname FROM pg_catalog.pg_roles r;'
   roles_query = sql.query(roles_sql, [pg_db])

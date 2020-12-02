@@ -76,7 +76,7 @@ control "V-72995" do
   crypt('a_secure_password', gen_salt('xdes')));"
 
 
-  sql = postgres_session(pg_dba, pg_dba_password, pg_host, pg_port)
+  sql = postgres_session(pg_dba, pg_dba_password, pg_host, input('pg_port'))
 
   pgcrypto_sql = "SELECT * FROM pg_available_extensions where name='pgcrypto'"
 

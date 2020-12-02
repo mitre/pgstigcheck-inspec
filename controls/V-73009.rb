@@ -93,7 +93,7 @@ control "V-73009" do
     dbs = db.map { |x| "-d #{x}" }.join(' ')
   end
 
-  sql = postgres_session(pg_dba, pg_dba_password, pg_host, pg_port)
+  sql = postgres_session(pg_dba, pg_dba_password, pg_host, input('pg_port'))
 
   roles_sql = 'SELECT r.rolname FROM pg_catalog.pg_roles r;'
   roles_query = sql.query(roles_sql, [pg_db])

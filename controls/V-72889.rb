@@ -144,7 +144,7 @@ control "V-72889" do
     its('mode') { should  cmp '0700' }
   end
 
-  sql = postgres_session(pg_dba, pg_dba_password, pg_host, pg_port)
+  sql = postgres_session(pg_dba, pg_dba_password, pg_host, input('pg_port'))
   describe sql.query("SELECT current_setting('client_min_messages')", [pg_db]) do
     its('output') { should_not match %r{log|debug|LOG|DEBUG} }
    its('output') { should match /^error$/i }

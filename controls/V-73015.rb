@@ -81,7 +81,7 @@ control "V-73015" do
   $ sudo service postgresql-${PGVER?} restart"
 
 
-  sql = postgres_session(pg_dba, pg_dba_password, pg_host, pg_port)
+  sql = postgres_session(pg_dba, pg_dba_password, pg_host, input('pg_port'))
 
   describe sql.query('SHOW password_encryption;', [pg_db]) do
     its('output') { should match /on|true/i }
