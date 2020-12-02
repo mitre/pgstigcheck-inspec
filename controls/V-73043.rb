@@ -12,7 +12,7 @@ pg_dba_password = input('pg_dba_password')
 
 pg_db = input('pg_db')
 
-pg_port = input('pg_port')
+
 
 pg_host = input('pg_host')
 

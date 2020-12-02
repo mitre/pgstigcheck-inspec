@@ -9,7 +9,7 @@ pg_db = input('pg_db')
 
 pg_host = input('pg_host')
 
-pg_port = input('pg_port')
+
 
 control "V-72841" do
   title "PostgreSQL must be configured to prohibit or restrict the use of

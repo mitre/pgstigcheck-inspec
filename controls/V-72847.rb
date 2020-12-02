@@ -10,7 +10,7 @@ pg_db = input('pg_db')
 
 pg_host = input('pg_host')
 
-pg_port = input('pg_port')
+
 
 control "V-72847" do
   title "The audit information produced by PostgreSQL must be protected from
