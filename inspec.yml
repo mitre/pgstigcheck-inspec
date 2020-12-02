@@ -39,7 +39,7 @@ inputs:
     description: "The postgres database owner password"
     type: string
     value: "password"
-    retured: true
+    required: true
     sensitive: true
 
   - name: pg_dba
@@ -54,14 +54,14 @@ inputs:
     type: string
     value: "password"
     required: true
-    senstive: true
+    sensitive: true
 
   - name: pg_user
     description: "The postgres daatabase system user"
     type: string
     value: "pguser"
     required: true
-    senstive: true
+    sensitive: true
 
   - name: pg_user_password
     description: "The postgres database system user password"
@@ -75,35 +75,35 @@ inputs:
     type: string
     value: "localhost"
     required: true
-    senstive: true
+    sensitive: true
 
   - name: pg_port
     description: "The port used to connect to the database"
     type: numeric
-    value: "5432"
+    value: 5432
     required: true
-    senstive: true
+    sensitive: true
 
   - name: login_user
     description: "The host login account that can login to the postgres host"
     type: string
     value: "postgres"
     required: true
-    senstive: true
+    sensitive: true
 
   - name: login_host
     description: "The host ip address that can access the postgres host"
     type: string
     value: "localhost"
     required: true
-    senstive: true
+    sensitive: true
 
   - name: pg_syslog_owner
     description: "The syslog process owner that the progress logs should use"
     type: string
     value: "postgres" #'postgres'
     required: true
-    senstive: true
+    sensitive: true
 
   - name: pg_syslog_facility
     description: "The syslog facility that postgres should be set to use for logging"
