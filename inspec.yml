@@ -31,14 +31,14 @@ inputs:
   - name: pg_group
     description: "The system group of the progress process"
     type: string
-    value: "postgres" #postgres
+    value: "postgres"
     required: true
     sensitive: true
 
   - name: pg_owner_password
     description: "The postgres database owner password"
     type: string
-    value: "password"
+    value: ""
     required: true
     sensitive: true
 
@@ -52,7 +52,7 @@ inputs:
   - name: pg_dba_password
     description: "The password for the postgres DBA user"
     type: string
-    value: "password"
+    value: ""
     required: true
     sensitive: true
 
@@ -66,7 +66,7 @@ inputs:
   - name: pg_user_password
     description: "The postgres database system user password"
     type: string
-    value: "password"
+    value: ""
     required: true
     sensitive: true
 
@@ -101,7 +101,7 @@ inputs:
   - name: pg_syslog_owner
     description: "The syslog process owner that the progress logs should use"
     type: string
-    value: "postgres" #'postgres'
+    value: "postgres" 
     required: true
     sensitive: true
 
