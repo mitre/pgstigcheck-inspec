@@ -59,12 +59,15 @@ require "shellwords"
 
     private
 
-    def escaped_query(query)
+    def escape_string(query)
       Shellwords.escape(query)
     end
 
     def create_psql_cmd(query, db = [])
-      dbs = db.map { |x| "-d #{x}" }.join(" ")
-      "PGPASSWORD='#{@pass}' psql -U #{@user} #{dbs} -h #{@host} -p #{@port} -A -t -c #{escaped_query(query)}"
+      if inspec.platform.in_family?("windows")
+        "psql -d postgresql://#{@user}:#{@pass}@#{@host}:#{@port}/#{db.first} -A -t -w -c \"#{query}\""
+      else
+        "psql -d postgresql://#{@user}:#{escape_string(@pass)}@#{@host}:#{@port}/#{db.first} -A -t -w -c #{escape_string(query)}"
+      end
     end
   end
