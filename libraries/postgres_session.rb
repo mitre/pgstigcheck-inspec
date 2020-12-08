@@ -11,7 +11,7 @@ require "shellwords"
     end
 
     def lines
-      output.split("\n")
+      output.split("\n").map(&:strip)
     end
 
     def to_s
