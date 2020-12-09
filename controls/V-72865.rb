@@ -143,7 +143,6 @@ control 'V-72865' do
       end
     end
   end
-end
 
     describe 'Column acl check' do
       skip "Review all access privileges and column access privileges list.
@@ -155,5 +154,4 @@ end
       it { should be_owned_by pg_owner }
       its('mode') { should cmp '0700' }
     end
-  end
 end
