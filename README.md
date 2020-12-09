@@ -100,7 +100,11 @@ gem install inspec
 ```sh
 inspec --version
 ```
+#### *Note* Windows and Linux InSpec Runner
 
+There are current issues with how the profiles run when using a windows or linux runner. We have accounted for this in the profile with the `windows_runner` input - which we *default* to `false` assuming a Linux based InSpec runner.
+
+If you are using a *Windows* based inspec installation, please set the `windows_runner` input to `true` either via your `inspec.yml` file or via the cli flag via, `--input windows_runner=true`
 ### Setting & Reviewing the Core Profile Inputs
 
 The `core` or `shared` inputs are set in the `inspec.yml` file in the profile. This stores the default values for the

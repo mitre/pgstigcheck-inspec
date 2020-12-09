@@ -252,3 +252,8 @@ inputs:
     description: "The timezone of the postgres server"
     type: string
     value: "UTC"
+
+  - name: windows_runner
+    description: "Define if the runner is the runner is window or linux"
+    type: Boolean
+    value: false
