@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 pg_ver = input('pg_version')
 
 pg_owner = input('pg_owner')
@@ -20,11 +22,11 @@ pg_replicas = input('pg_replicas')
 
 approved_auth_methods = input('approved_auth_methods')
 
-control "V-72859" do
+control 'V-72859' do
   title "PostgreSQL must enforce approved authorizations for logical access to
   information and system resources in accordance with applicable access control
   policies."
-  desc  "Authentication with a DoD-approved PKI certificate does not
+  desc "Authentication with a DoD-approved PKI certificate does not
   necessarily imply authorization to access PostgreSQL. To mitigate the risk of
   unauthorized access to sensitive information by entities that have been issued
   certificates by DoD-approved PKIs, all DoD systems, including databases, must
@@ -53,14 +55,14 @@ control "V-72859" do
   with applicable policy."
 
   impact 0.5
-  tag "severity": "medium"
-  tag "gtitle": "SRG-APP-000033-DB-000084"
-  tag "gid": "V-72859"
-  tag "rid": "SV-87511r2_rule"
-  tag "stig_id": "PGS9-00-000900"
-  tag "fix_id": "F-79301r3_fix"
-  tag "cci": ["CCI-000213"]
-  tag "nist": ["AC-3", "Rev_4"]
+  tag "severity": 'medium'
+  tag "gtitle": 'SRG-APP-000033-DB-000084'
+  tag "gid": 'V-72859'
+  tag "rid": 'SV-87511r2_rule'
+  tag "stig_id": 'PGS9-00-000900'
+  tag "fix_id": 'F-79301r3_fix'
+  tag "cci": ['CCI-000213']
+  tag "nist": %w[AC-3 Rev_4]
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -71,7 +73,7 @@ control "V-72859" do
   tag "mitigation_controls": nil
   tag "responsibility": nil
   tag "ia_controls": nil
-  desc "check", "From the system security plan or equivalent documentation,
+  desc 'check', "From the system security plan or equivalent documentation,
   determine the appropriate permissions on database objects for each kind (group
   role) of user. If this documentation is missing, this is a finding.
 
@@ -102,7 +104,7 @@ control "V-72859" do
   Review all entries and their associated authentication methods. If any entries
   do not have their documented authentication requirements, this is a finding."
 
-  desc "fix", "Create and/or maintain documentation of each group role's
+  desc 'fix', "Create and/or maintain documentation of each group role's
   appropriate permissions on database objects.
 
   Implement these permissions in the database, and remove any permissions that
@@ -230,53 +232,54 @@ control "V-72859" do
   # INITD SERVER ONLY
   $ sudo service postgresql-${PGVER?} reload"
 
-if false
-  sql = postgres_session(pg_dba, pg_dba_password, pg_host, input('pg_port'))
+  if input('windows_runner')
+    sql = postgres_session(pg_dba, pg_dba_password, pg_host, input('pg_port'))
 
-  roles_sql = 'SELECT r.rolname FROM pg_catalog.pg_roles r;'
-  roles_query = sql.query(roles_sql, [pg_db])
-  roles = roles_query.lines
+    roles_sql = 'SELECT r.rolname FROM pg_catalog.pg_roles r;'
+    roles_query = sql.query(roles_sql, [pg_db])
+    roles = roles_query.lines
 
-  roles.each do |role|
-    unless pg_superusers.include?(role)
-      superuser_sql = "SELECT r.rolsuper FROM pg_catalog.pg_roles r "\
+    roles.each do |role|
+      next if pg_superusers.include?(role)
+
+      superuser_sql = 'SELECT r.rolsuper FROM pg_catalog.pg_roles r '\
         "WHERE r.rolname = '#{role}';"
 
       describe sql.query(superuser_sql, [pg_db]) do
         its('output') { should_not eq 't' }
       end
     end
-  end
 
-  authorized_owners = pg_superusers
-  owners = authorized_owners.join('|')
+    authorized_owners = pg_superusers
+    owners = authorized_owners.join('|')
 
-  object_granted_privileges = 'arwdDxtU'
-  object_public_privileges = 'r'
-  object_acl = "^((((#{owners})=[#{object_granted_privileges}]+|"\
-    "=[#{object_public_privileges}]+)\/\\w+,?)+|)\\|"
-  object_acl_regex = Regexp.new(object_acl)
+    object_granted_privileges = 'arwdDxtU'
+    object_public_privileges = 'r'
+    object_acl = "^((((#{owners})=[#{object_granted_privileges}]+|"\
+      "=[#{object_public_privileges}]+)\/\\w+,?)+|)\\|"
+    object_acl_regex = Regexp.new(object_acl)
 
-  objects_sql = "SELECT n.nspname, c.relname, c.relkind "\
-    "FROM pg_catalog.pg_class c "\
-    "LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace "\
-    "WHERE c.relkind IN ('r', 'v', 'm', 'S', 'f') "\
-    "AND n.nspname !~ '^pg_' AND pg_catalog.pg_table_is_visible(c.oid);"
+    objects_sql = 'SELECT n.nspname, c.relname, c.relkind '\
+      'FROM pg_catalog.pg_class c '\
+      'LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace '\
+      "WHERE c.relkind IN ('r', 'v', 'm', 'S', 'f') "\
+      "AND n.nspname !~ '^pg_' AND pg_catalog.pg_table_is_visible(c.oid);"
 
-  databases_sql = 'SELECT datname FROM pg_catalog.pg_database where not datistemplate;'
-  databases_query = sql.query(databases_sql, [pg_db])
-  databases = databases_query.lines
+    databases_sql = 'SELECT datname FROM pg_catalog.pg_database where not datistemplate;'
+    databases_query = sql.query(databases_sql, [pg_db])
+    databases = databases_query.lines
 
-  databases.each do |database|
-    rows = sql.query(objects_sql, [database])
-    if rows.methods.include?(:output) # Handle connection disabled on database
+    databases.each do |database|
+      rows = sql.query(objects_sql, [database])
+      next unless rows.methods.include?(:output) # Handle connection disabled on database
+
       objects = rows.lines
 
       objects.each do |obj|
         schema, object, type = obj.split('|')
         relacl_sql = "SELECT pg_catalog.array_to_string(c.relacl, E','), "\
-          "n.nspname, c.relname, c.relkind FROM pg_catalog.pg_class c "\
-          "LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace "\
+          'n.nspname, c.relname, c.relkind FROM pg_catalog.pg_class c '\
+          'LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace '\
           "WHERE n.nspname = '#{schema}' AND c.relname = '#{object}' "\
           "AND c.relkind = '#{type}';"
 
@@ -285,35 +288,33 @@ if false
         end
       end
     end
-  end
 
-  describe "Column acl check" do
-    skip "Review all access privileges and column access privileges list. If any roles' 
+    describe 'Column acl check' do
+      skip "Review all access privileges and column access privileges list. If any roles'
     privileges exceed those documented, this is a finding."
-  end
-  
-  describe postgres_hba_conf(pg_hba_conf_file).where { type == 'local' } do
-    its('user.uniq') { should cmp pg_owner }
-    its('auth_method.uniq') { should_not cmp 'trust'}
-  end
+    end
 
-  describe postgres_hba_conf(pg_hba_conf_file).where { database == 'replication' } do
-    its('type.uniq') { should cmp 'host' }
-    its('address.uniq.sort') { should cmp pg_replicas.sort }
-    its('user.uniq') { should cmp 'replication' }
-    its('auth_method.uniq') { should be_in approved_auth_methods }
-  end
+    describe postgres_hba_conf(pg_hba_conf_file).where { type == 'local' } do
+      its('user.uniq') { should cmp pg_owner }
+      its('auth_method.uniq') { should_not cmp 'trust' }
+    end
 
-  describe postgres_hba_conf(pg_hba_conf_file).where { type == 'host' } do
-    its('auth_method.uniq') { should be_in approved_auth_methods }
+    describe postgres_hba_conf(pg_hba_conf_file).where { database == 'replication' } do
+      its('type.uniq') { should cmp 'host' }
+      its('address.uniq.sort') { should cmp pg_replicas.sort }
+      its('user.uniq') { should cmp 'replication' }
+      its('auth_method.uniq') { should be_in approved_auth_methods }
+    end
+
+    describe postgres_hba_conf(pg_hba_conf_file).where { type == 'host' } do
+      its('auth_method.uniq') { should be_in approved_auth_methods }
+    end
+
+  else
+
+    describe 'Requires manual review at this time.' do
+      skip 'Requires manual review at this time.'
+    end
+
   end
-  
- else
-  
-  describe 'Requires manual review at this time.' do
-    skip 'Requires manual review at this time.'
-  end
-  
- end
-  
 end
