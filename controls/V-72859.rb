@@ -233,6 +233,10 @@ control 'V-72859' do
   $ sudo service postgresql-${PGVER?} reload"
 
   if input('windows_runner')
+    describe 'Requires manual review at this time.' do
+      skip 'Requires manual review at this time.'
+    end
+  else
     sql = postgres_session(pg_dba, pg_dba_password, pg_host, input('pg_port'))
 
     roles_sql = 'SELECT r.rolname FROM pg_catalog.pg_roles r;'
@@ -309,12 +313,5 @@ control 'V-72859' do
     describe postgres_hba_conf(pg_hba_conf_file).where { type == 'host' } do
       its('auth_method.uniq') { should be_in approved_auth_methods }
     end
-
-  else
-
-    describe 'Requires manual review at this time.' do
-      skip 'Requires manual review at this time.'
-    end
-
   end
 end

@@ -83,6 +83,10 @@ control 'V-72865' do
   REVOKE SELECT ON some_function FROM bob;"
 
   if input('windows_runner')
+    describe 'Requires manual review at this time.' do
+      skip 'Requires manual review at this time.'
+    end
+  else
     sql = postgres_session(pg_dba, pg_dba_password, pg_host, input('pg_port'))
 
     authorized_owners = pg_superusers
@@ -149,12 +153,5 @@ control 'V-72865' do
       it { should be_owned_by pg_owner }
       its('mode') { should cmp '0700' }
     end
-
-  else
-
-    describe 'Requires manual review at this time.' do
-      skip 'Requires manual review at this time.'
-    end
-
   end
 end
