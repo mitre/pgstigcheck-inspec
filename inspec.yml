@@ -8,7 +8,7 @@ copyright_email: info@crunchydata.com
 license: Apache-2.0
 summary: "Crunchy PostgreSQL 9.5 Security Technical Implementation Guide InSpec profile"
 
-version: 1.6.5
+version: 1.6.10
 
 inputs:
   - name: pg_owner
