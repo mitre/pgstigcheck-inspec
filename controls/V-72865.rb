@@ -80,6 +80,7 @@ control "V-72865" do
   ALTER ROLE bob NOINHERIT;
   REVOKE SELECT ON some_function FROM bob;"
 
+  if !input('windows_runner')
   sql = postgres_session(pg_dba, pg_dba_password, pg_host, input('pg_port'))
 
   authorized_owners = pg_superusers
@@ -145,5 +146,9 @@ control "V-72865" do
     it { should be_directory }
     it { should be_owned_by pg_owner }
     its('mode') { should cmp '0700' }
+  end
+else
+  describe 'This must be manually reviewed at this time' do
+    skip 'This must be manually reveiwed at this time'
   end
 end
