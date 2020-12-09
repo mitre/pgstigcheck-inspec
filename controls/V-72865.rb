@@ -2,7 +2,7 @@ pg_owner = input('pg_owner')
 
 pg_group = input('pg_group')
 
-pg_dba = input('pg_dba',)
+pg_dba = input('pg_dba')
 
 pg_dba_password = input('pg_dba_password')
 
