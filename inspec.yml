@@ -5,10 +5,10 @@ title: Crunchy PostgreSQL 9.5 Security Technical Implementation Guide InSpec pro
 maintainer: Yogesh Sharma <Yogesh.Sharma@CrunchyData.com>, Aaron Lippold <lippold@gmail.com>
 copyright: Crunchy Data
 copyright_email: info@crunchydata.com
-license: Apache 2.0
+license: Apache-2.0
 summary: "Crunchy PostgreSQL 9.5 Security Technical Implementation Guide InSpec profile"
 
-version: 1.6.3
+version: 1.6.5
 
 inputs:
   - name: pg_owner
