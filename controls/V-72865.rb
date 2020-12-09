@@ -142,6 +142,8 @@ control 'V-72865' do
         tested.push(obj)
       end
     end
+  end
+end
 
     describe 'Column acl check' do
       skip "Review all access privileges and column access privileges list.
