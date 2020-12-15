@@ -8,7 +8,7 @@ copyright_email: info@crunchydata.com
 license: Apache-2.0
 summary: "Crunchy PostgreSQL 9.5 Security Technical Implementation Guide InSpec profile"
 
-version: 1.6.11
+version: 1.6.12
 
 inputs:
   - name: pg_owner
@@ -208,6 +208,12 @@ inputs:
     value: "/var/lib/pgsql/9.5/data/pg_log"
     required: true
 
+  - name: pgaudit_installation
+    description: "V-73039 uses this location of the pgaudit installation on the system (e.g., /usr/pgsql-9.5/share/contrib/pgaudit)"
+    type: string
+    value: "/usr/pgsql-9.5/share/contrib/pgaudit"
+    required: true
+
   - name: pgaudit_log_items
     description: "The expected item types that postgres should log to the logging system"
     type: array
@@ -253,6 +259,24 @@ inputs:
     type: string
     value: "UTC"
 
+  - name: approved_auth_methods
+    description: "V-72849, V-72859, V-73049 uses this list of approved authentication methods (e.g., per STIG, these are only: gss, sspi, or ldap)"
+    type: array
+    value: ['gss', 'sspi', 'ldap']
+    required: true
+    
+  - name: approved_packages
+    description: "V-73011 uses this list of approved postgres-related packages (e.g., postgresql-server.x86_64, postgresql-odbc.x86_64)"
+    type: array
+    value: []
+    required: true
+    
+  - name: approved_ext
+    description: "V-73007, V-73009 uses this list of approved database extensions (e.g., plpgsql)"
+    type: array
+    value: ['plpgsql']
+    required: true
+    
   - name: windows_runner
     description: "Define if the runner is the runner is window or linux"
     type: Boolean
