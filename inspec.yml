@@ -253,6 +253,24 @@ inputs:
     type: string
     value: "UTC"
 
+  - name: approved_auth_methods
+    description: "V-72849, V-72859, V-73049 uses this list of approved authentication methods (e.g., per STIG, these are only: gss, sspi, or ldap)"
+    type: array
+    value: ['gss', 'sspi', 'ldap']
+    required: true
+    
+  - name: approved_packages
+    description: "V-73011 uses this list of approved postgres-related packages (e.g., postgresql-server.x86_64, postgresql-odbc.x86_64)"
+    type: array
+    value: []
+    required: true
+    
+  - name: approved_ext
+    description: "V-73007, V-73009 uses this list of approved database extensions (e.g., plpgsql)"
+    type: array
+    value: ['plpgsql']
+    required: true
+    
   - name: windows_runner
     description: "Define if the runner is the runner is window or linux"
     type: Boolean
