@@ -208,6 +208,12 @@ inputs:
     value: "/var/lib/pgsql/9.5/data/pg_log"
     required: true
 
+  - name: pgaudit_installation
+    description: "V-73039 uses this location of the pgaudit installation on the system (e.g., /usr/pgsql-9.5/share/contrib/pgaudit)"
+    type: string
+    value: "/usr/pgsql-9.5/share/contrib/pgaudit"
+    required: true
+
   - name: pgaudit_log_items
     description: "The expected item types that postgres should log to the logging system"
     type: array
