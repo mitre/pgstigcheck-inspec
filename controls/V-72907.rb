@@ -85,7 +85,7 @@ control "V-72907" do
   #Find the most recently modified log file in the pg_audit_log_dir, grep for the syntax error statement, and then
   #test to validate the output matches the regex.
 
-  describe command("cat `find #{pg_audit_log_dir} -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -f2- -d\" \"` | grep \"syntax error at or near\"") do
+  describe command("ls -dt #{pg_audit_log_dir}/* | head -1 | xargs cat | grep \"syntax error at or near\"") do
     its('stdout') { should match /^.*syntax error at or near .CREAT..*$/ }
   end
  end 
