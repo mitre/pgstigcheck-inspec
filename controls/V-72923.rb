@@ -95,12 +95,18 @@ control "V-72923" do
   # INITD SERVER ONLY 
   $ sudo service postgresql-${PGVER?} reload"
 
-
+if file(pg_audit_log_dir).exist?
   describe command("PGPASSWORD='#{pg_dba_password}' psql -U #{pg_dba} -d #{pg_db} -h #{pg_host} -A -t -c \"SET ROLE pgauditrolefailuretest;\"") do
     its('stdout') { should match // }
   end
 
   describe command("cat `find #{pg_audit_log_dir} -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -f2- -d\" \"` | grep \"does not exist\"") do
     its('stdout') { should match /^.*role \"pgauditrolefailuretest\" does not exist.*$/ }
-  end
+  end 
+else
+  describe "The #{pg_audit_log_dir} directory was not found. Check path for this postgres version/install to define the value for the 'pg_audit_log_dir' inspec input parameter." do
+    skip "The #{pg_audit_log_dir} directory was not found. Check path for this postgres version/install to define the value for the 'pg_audit_log_dir' inspec input parameter."
+  end 
+end
+
 end

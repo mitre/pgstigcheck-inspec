@@ -78,6 +78,7 @@ control "V-72907" do
 
   sql = postgres_session(pg_dba, pg_dba_password, pg_host, input('pg_port'))
 
+if file(pg_audit_log_dir).exist?  
   describe sql.query('CREAT TABLE incorrect_syntax2(id INT);', [pg_db]) do
     its('output') { should match // }     
   end
@@ -87,5 +88,11 @@ control "V-72907" do
 
   describe command("cat `find #{pg_audit_log_dir} -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -f2- -d\" \"` | grep \"syntax error at or near\"") do
     its('stdout') { should match /^.*syntax error at or near .CREAT..*$/ }
-  end
- end 
+  end 
+else
+  describe "The #{pg_audit_log_dir} directory was not found. Check path for this postgres version/install to define the value for the 'pg_audit_log_dir' inspec input parameter." do
+    skip "The #{pg_audit_log_dir} directory was not found. Check path for this postgres version/install to define the value for the 'pg_audit_log_dir' inspec input parameter."
+  end 
+end  
+
+end 

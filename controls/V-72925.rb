@@ -102,9 +102,14 @@ possible, all disconnections must be logged."
 
   # INITD SERVER ONLY 
   $ sudo service postgresql-${PGVER?} reload"
-
+if file(pg_audit_log_dir).exist?
   describe command("cat `find #{pg_audit_log_dir} -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -f2- -d\" \"` | grep \"connection authorized\"") do
     its('stdout') { should match /^.*user=postgres.*$/ }
+  end 
+else
+  describe "The #{pg_audit_log_dir} directory was not found. Check path for this postgres version/install to define the value for the 'pg_audit_log_dir' inspec input parameter." do
+    skip "The #{pg_audit_log_dir} directory was not found. Check path for this postgres version/install to define the value for the 'pg_audit_log_dir' inspec input parameter."
   end
+end
 
 end

@@ -93,26 +93,26 @@ control "V-72939" do
 
   # INITD SERVER ONLY 
   $ sudo service postgresql-${PGVER?} reload"
-
+if file(pg_audit_log_dir).exist?
   describe command("PGPASSWORD='#{pg_dba_password}' psql -U #{pg_dba} -d #{pg_db} -h #{pg_host} -A -t -c \"CREATE TABLE stig_test(id INT); ALTER TABLE stig_test ENABLE ROW LEVEL SECURITY; CREATE POLICY lock_table ON stig_test USING ('postgres' = current_user); DROP POLICY lock_table ON stig_test; ALTER TABLE stig_test DISABLE ROW LEVEL SECURITY; DROP TABLE stig_test;\"") do
     its('stdout') { should match // }
   end
 
   describe command("cat `find #{pg_audit_log_dir} -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -f2- -d\" \"` | grep \"AUDIT: SESSION\"") do
     its('stdout') { should match /^.*CREATE TABLE,TABLE,public.stig_test.*$/ }
-  end
+  end 
 
   describe command("cat `find #{pg_audit_log_dir} -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -f2- -d\" \"` | grep \"AUDIT: SESSION\"") do
     its('stdout') { should match /^.*ALTER TABLE stig_test ENABLE ROW LEVEL SECURITY.*$/ }
-  end
+  end 
 
   describe command("cat `find #{pg_audit_log_dir} -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -f2- -d\" \"` | grep \"AUDIT: SESSION\"") do
     its('stdout') { should match /^.*CREATE POLICY,POLICY,lock_table.*$/ }
-  end
+  end 
 
   describe command("cat `find #{pg_audit_log_dir} -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -f2- -d\" \"` | grep \"AUDIT: SESSION\"") do
     its('stdout') { should match /^.*DROP POLICY lock_table ON stig_test.*$/ }
-  end
+  end 
 
   describe command("cat `find #{pg_audit_log_dir} -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -f2- -d\" \"` | grep \"AUDIT: SESSION\"") do
     its('stdout') { should match /^.*ALTER TABLE stig_test DISABLE ROW LEVEL SECURITY.*$/ }
@@ -120,6 +120,11 @@ control "V-72939" do
 
   describe command("cat `find #{pg_audit_log_dir} -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -f2- -d\" \"` | grep \"AUDIT: SESSION\"") do
     its('stdout') { should match /^.*DROP TABLE stig_test.*$/ }
-  end
+  end 
+else
+  describe "The #{pg_audit_log_dir} directory was not found. Check path for this postgres version/install to define the value for the 'pg_audit_log_dir' inspec input parameter." do
+    skip "The #{pg_audit_log_dir} directory was not found. Check path for this postgres version/install to define the value for the 'pg_audit_log_dir' inspec input parameter."
+  end 
+end
 
 end
