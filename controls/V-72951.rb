@@ -163,9 +163,14 @@ control "V-72951" do
 
     describe command("cat `find #{pg_audit_log_dir} -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -f2- -d\" \"` | grep \"permission denied for schema test_schema\"") do
       its('stdout') { should match /^.*permission denied for schema test_schema.*$/ }
-    end
+    end if file(pg_audit_log_dir).exist?
 
     describe command("cat `find #{pg_audit_log_dir} -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -f2- -d\" \"` | grep \"must be owner of schema test_schema\"") do
       its('stdout') { should match /^.*must be owner of schema test_schema.*$/ }
-    end
+    end if file(pg_audit_log_dir).exist?
+
+    describe "The #{pg_audit_log_dir} directory was not found. Check path for this postgres version/install to define the value for the 'pg_audit_log_dir' inspec input parameter." do
+      skip "The #{pg_audit_log_dir} directory was not found. Check path for this postgres version/install to define the value for the 'pg_audit_log_dir' inspec input parameter."
+    end if !file(pg_audit_log_dir).exist?
+
 end
