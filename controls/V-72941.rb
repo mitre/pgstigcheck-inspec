@@ -82,17 +82,18 @@ control "V-72941" do
   enabled, review supplementary content APPENDIX-C for instructions on enabling
   logging."
 
-
+if file(pg_audit_log_dir).exist?
   describe command("PGPASSWORD='#{pg_dba_password}' psql -U #{pg_dba} -d #{pg_db} -h #{pg_host} -A -t -c \"CREATE ROLE fooaudit; SET ROLE fooaudit; SELECT * FROM pg_authid; SET ROLE postgres; DROP ROLE fooaudit;\"") do
     its('stdout') { should match // }
   end
 
  describe command("cat `find #{pg_audit_log_dir} -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -f2- -d\" \"` | grep \"permission denied for relation\"") do
    its('stdout') { should match /^.*pg_authid.*$/ }
-  end if file(pg_audit_log_dir).exist?
-
+  end 
+else
   describe "The #{pg_audit_log_dir} directory was not found. Check path for this postgres version/install to define the value for the 'pg_audit_log_dir' inspec input parameter." do
     skip "The #{pg_audit_log_dir} directory was not found. Check path for this postgres version/install to define the value for the 'pg_audit_log_dir' inspec input parameter."
-  end if !file(pg_audit_log_dir).exist?
+  end
+end
 
 end
