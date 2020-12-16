@@ -114,6 +114,8 @@ control "V-72951" do
 
     sql = postgres_session(pg_dba, pg_dba_password, pg_host, input('pg_port'))
 
+  if file(pg_audit_log_dir).exist?
+    
     describe sql.query('DROP TABLE IF EXISTS test_schema.test_table;', [pg_db]) do
       its('output') { should eq 'DROP TABLE' }
     end
@@ -163,14 +165,16 @@ control "V-72951" do
 
     describe command("cat `find #{pg_audit_log_dir} -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -f2- -d\" \"` | grep \"permission denied for schema test_schema\"") do
       its('stdout') { should match /^.*permission denied for schema test_schema.*$/ }
-    end if file(pg_audit_log_dir).exist?
+    end 
 
     describe command("cat `find #{pg_audit_log_dir} -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -f2- -d\" \"` | grep \"must be owner of schema test_schema\"") do
       its('stdout') { should match /^.*must be owner of schema test_schema.*$/ }
-    end if file(pg_audit_log_dir).exist?
+    end 
 
+else
     describe "The #{pg_audit_log_dir} directory was not found. Check path for this postgres version/install to define the value for the 'pg_audit_log_dir' inspec input parameter." do
       skip "The #{pg_audit_log_dir} directory was not found. Check path for this postgres version/install to define the value for the 'pg_audit_log_dir' inspec input parameter."
-    end if !file(pg_audit_log_dir).exist?
+    end
+end
 
 end
