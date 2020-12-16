@@ -85,7 +85,11 @@ control "V-72977" do
 
   describe command("cat `find #{pg_audit_log_dir} -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -f2- -d\" \"` | grep \"permission denied for relation test\"") do
     its('stdout') { should match /^.*permission denied for relation test.*$/ }
-  end
+  end if file(pg_audit_log_dir).exist?
+
+  describe "The #{pg_audit_log_dir} directory was not found. Check path for this postgres version/install to define the value for the 'pg_audit_log_dir' inspec input parameter." do
+    skip "The #{pg_audit_log_dir} directory was not found. Check path for this postgres version/install to define the value for the 'pg_audit_log_dir' inspec input parameter."
+  end if !file(pg_audit_log_dir).exist?
 
   describe sql.query('DROP ROLE bob; DROP TABLE "test" CASCADE', [pg_db]) do
   end
