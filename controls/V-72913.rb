@@ -89,7 +89,7 @@ control "V-72913" do
   enabling logging."
 
   #Execute an incorrectly-formed SQL statement with bad syntax, to prompt log ouput
-
+if file(pg_audit_log_dir).exist?
   describe command("PGPASSWORD='#{pg_dba_password}' psql -U #{pg_dba} -d #{pg_db} -h #{pg_host} -A -t -c \"CREATE ROLE pgauditrolefailuretest; SET ROLE pgauditrolefailuretest; SET pgaudit.role='test'; SET ROLE postgres; DROP ROLE IF EXISTS pgauditrolefailuretest;\"") do
     its('stdout') { should match // }
   end
@@ -99,10 +99,11 @@ control "V-72913" do
 
   describe command("cat `find #{pg_audit_log_dir} -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -f2- -d\" \"` | grep \"permission denied to set parameter\"") do
     its('stdout') { should match /^.*permission denied to set parameter .pgaudit.role..*$/ }
-  end if file(pg_audit_log_dir).exist?
-
+  end 
+else
   describe "The #{pg_audit_log_dir} directory was not found. Check path for this postgres version/install to define the value for the 'pg_audit_log_dir' inspec input parameter." do
     skip "The #{pg_audit_log_dir} directory was not found. Check path for this postgres version/install to define the value for the 'pg_audit_log_dir' inspec input parameter."
-  end if !file(pg_audit_log_dir).exist?
+  end
+end
   
 end
