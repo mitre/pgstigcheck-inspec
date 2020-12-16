@@ -74,7 +74,7 @@ control "V-72977" do
   enabling logging."
 
   sql = postgres_session(pg_dba, pg_dba_password, pg_host, input('pg_port'))
-  
+if file(pg_audit_log_dir).exist?  
   describe sql.query('DROP ROLE IF EXISTS bob; CREATE ROLE bob; CREATE TABLE test(id INT);', [pg_db]) do
     its('output') { should match /CREATE TABLE/ }
   end
@@ -85,12 +85,14 @@ control "V-72977" do
 
   describe command("cat `find #{pg_audit_log_dir} -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -f2- -d\" \"` | grep \"permission denied for relation test\"") do
     its('stdout') { should match /^.*permission denied for relation test.*$/ }
-  end if file(pg_audit_log_dir).exist?
-
-  describe "The #{pg_audit_log_dir} directory was not found. Check path for this postgres version/install to define the value for the 'pg_audit_log_dir' inspec input parameter." do
-    skip "The #{pg_audit_log_dir} directory was not found. Check path for this postgres version/install to define the value for the 'pg_audit_log_dir' inspec input parameter."
-  end if !file(pg_audit_log_dir).exist?
-
+  end 
+  
   describe sql.query('DROP ROLE bob; DROP TABLE "test" CASCADE', [pg_db]) do
   end
+else
+  describe "The #{pg_audit_log_dir} directory was not found. Check path for this postgres version/install to define the value for the 'pg_audit_log_dir' inspec input parameter." do
+    skip "The #{pg_audit_log_dir} directory was not found. Check path for this postgres version/install to define the value for the 'pg_audit_log_dir' inspec input parameter."
+  end
+end
+
 end
