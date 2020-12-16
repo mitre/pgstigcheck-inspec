@@ -100,26 +100,30 @@ control "V-72939" do
 
   describe command("cat `find #{pg_audit_log_dir} -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -f2- -d\" \"` | grep \"AUDIT: SESSION\"") do
     its('stdout') { should match /^.*CREATE TABLE,TABLE,public.stig_test.*$/ }
-  end
+  end if file(pg_audit_log_dir).exist?
 
   describe command("cat `find #{pg_audit_log_dir} -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -f2- -d\" \"` | grep \"AUDIT: SESSION\"") do
     its('stdout') { should match /^.*ALTER TABLE stig_test ENABLE ROW LEVEL SECURITY.*$/ }
-  end
+  end if file(pg_audit_log_dir).exist?
 
   describe command("cat `find #{pg_audit_log_dir} -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -f2- -d\" \"` | grep \"AUDIT: SESSION\"") do
     its('stdout') { should match /^.*CREATE POLICY,POLICY,lock_table.*$/ }
-  end
+  end if file(pg_audit_log_dir).exist?
 
   describe command("cat `find #{pg_audit_log_dir} -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -f2- -d\" \"` | grep \"AUDIT: SESSION\"") do
     its('stdout') { should match /^.*DROP POLICY lock_table ON stig_test.*$/ }
-  end
+  end if file(pg_audit_log_dir).exist?
 
   describe command("cat `find #{pg_audit_log_dir} -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -f2- -d\" \"` | grep \"AUDIT: SESSION\"") do
     its('stdout') { should match /^.*ALTER TABLE stig_test DISABLE ROW LEVEL SECURITY.*$/ }
-  end
+  end if file(pg_audit_log_dir).exist?
 
   describe command("cat `find #{pg_audit_log_dir} -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -f2- -d\" \"` | grep \"AUDIT: SESSION\"") do
     its('stdout') { should match /^.*DROP TABLE stig_test.*$/ }
-  end
+  end if file(pg_audit_log_dir).exist?
+
+  describe "The #{pg_audit_log_dir} directory was not found. Check path for this postgres version/install to define the value for the 'pg_audit_log_dir' inspec input parameter." do
+    skip "The #{pg_audit_log_dir} directory was not found. Check path for this postgres version/install to define the value for the 'pg_audit_log_dir' inspec input parameter."
+  end if !file(pg_audit_log_dir).exist?
 
 end
