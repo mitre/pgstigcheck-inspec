@@ -99,6 +99,10 @@ control "V-72913" do
 
   describe command("cat `find #{pg_audit_log_dir} -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -f2- -d\" \"` | grep \"permission denied to set parameter\"") do
     its('stdout') { should match /^.*permission denied to set parameter .pgaudit.role..*$/ }
-  end
+  end if file(pg_audit_log_dir).exist?
 
+  describe "The #{pg_audit_log_dir} directory was not found. Check path for this postgres version/install to define the value for the 'pg_audit_log_dir' inspec input parameter." do
+    skip "The #{pg_audit_log_dir} directory was not found. Check path for this postgres version/install to define the value for the 'pg_audit_log_dir' inspec input parameter."
+  end if !file(pg_audit_log_dir).exist?
+  
 end
