@@ -8,7 +8,7 @@ copyright_email: info@crunchydata.com
 license: Apache-2.0
 summary: "Crunchy PostgreSQL 9.5 Security Technical Implementation Guide InSpec profile"
 
-version: 1.6.12
+version: 1.6.13
 
 inputs:
   - name: pg_owner
@@ -251,8 +251,8 @@ inputs:
 
   - name: pg_max_connections
     description: "The maximum allowed number of connections to the postgres instance at any one time."
-    type: string
-    value: "100"
+    type: numeric
+    value: 100
 
   - name: pg_timezone
     description: "The timezone of the postgres server"
