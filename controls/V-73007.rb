@@ -95,10 +95,10 @@ sql = postgres_session(input('pg_dba'), input('pg_dba_password'), input('pg_host
           it { should  be_in input('approved_ext') }
       end
     end
-  else
+  elseif installed_extensions.kind_of?(String)
       describe "The installed extension: #{installed_extensions}" do
         subject { installed_extensions }
-          it { should  be_in input('approved_ext') }
+          it { should  be_in input('approved_ext') || should == ""}
       end    
   end
 end
