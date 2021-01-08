@@ -90,13 +90,13 @@ sql = postgres_session(input('pg_dba'), input('pg_dba_password'), input('pg_host
   
   if installed_extensions.kind_of?(Array)
     installed_extensions.each do |extension|
-      describe "The installed extension: #{extension}" do
+      describe "(A) The installed extension: #{extension}" do
         subject { extension }
           it { should  be_in input('approved_ext') }
       end
     end
   else
-      describe "The installed extension: #{installed_extensions}" do
+      describe "(B) The installed extension: #{installed_extensions}" do
         subject { installed_extensions }
           it { should  be_in input('approved_ext') || should == ""}
       end    
