@@ -8,7 +8,7 @@ copyright_email: info@crunchydata.com
 license: Apache-2.0
 summary: "Crunchy PostgreSQL 9.5 Security Technical Implementation Guide InSpec profile"
 
-version: 1.6.13
+version: 1.6.14
 
 inputs:
   - name: pg_owner
@@ -272,9 +272,9 @@ inputs:
     required: true
     
   - name: approved_ext
-    description: "V-73007, V-73009 uses this list of approved database extensions (e.g., plpgsql)"
+    description: "V-73007, V-73009 uses this list of approved database extensions"
     type: array
-    value: ['plpgsql']
+    value: []
     required: true
     
   - name: windows_runner
