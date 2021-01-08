@@ -88,17 +88,23 @@ sql = postgres_session(input('pg_dba'), input('pg_dba_password'), input('pg_host
   installed_extensions = sql.query('select extname from pg_extension where extname != \'plpgsql\';').output
 #  installed_extensions = sql.query('select extname from pg_extension;').output
   
-  if installed_extensions.kind_of?(Array)
+    if installed_extensions.kind_of?(Array)
     installed_extensions.each do |extension|
-      describe "(A) The installed extension: #{extension}" do
+      describe "(array) The installed extension: #{extension}" do
         subject { extension }
           it { should  be_in input('approved_ext') }
       end
     end
+#  elseif installed_extensions.empty?
+#      describe "(empty) The installed extension: #{installed_extensions}" do
+#        subject { installed_extensions }
+#          it { should == '' }
+#      end
   else
-      describe "(B) The installed extension: #{installed_extensions}" do
+      describe "(string) The installed extension: #{installed_extensions}" do
         subject { installed_extensions }
-          it { should  be_in input('approved_ext') || should == ""}
-      end    
+          it { should  be_in input('approved_ext') }
+      end
   end
+  
 end
