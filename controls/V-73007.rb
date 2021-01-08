@@ -62,13 +62,13 @@ control "V-73007" do
 
 # @todo executed the SELECT statement in psql, got no output, psql not hardended? fix the stdout code, as needed.
 
-dbs = nil
-db = nil
+# dbs = nil
+# db = nil
 
-if !("#{pg_db}".to_s.empty?)
-  db = ["#{pg_db}"]
-  dbs = db.map { |x| "-d #{x}" }.join(' ')
-end
+# if !("#{pg_db}".to_s.empty?)
+#  db = ["#{pg_db}"]
+#  dbs = db.map { |x| "-d #{x}" }.join(' ')
+# end
 
 # @todo need SSP data to compare that no extensions are present that are not approved?
 
@@ -83,7 +83,7 @@ end
 #    end
 #  end
   
-  describe sql.query("select * from pg_extension where extname != \'plpgsql\';", [input('pg_db')]) do
+  describe sql.query('select * from pg_extension where extname != \'plpgsql\';"', [input('pg_db')]) do
      its('output') { should be in input('approved_ext') }
-  end  
+  end 
 end
