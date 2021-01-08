@@ -84,6 +84,6 @@ control "V-73007" do
 #  end
   
   describe sql.query('select * from pg_extension where extname != \'plpgsql\';"', [input('pg_db')]) do
-     its('output') { should be in input('approved_ext') }
+     its('output') { should be_in input('approved_ext') }
   end 
 end
