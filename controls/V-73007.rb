@@ -72,14 +72,18 @@ end
 
 # @todo need SSP data to compare that no extensions are present that are not approved?
 
-  describe.one do
-    approved_ext.each do |extension|
-      describe command("PGPASSWORD='#{pg_dba_password}' psql -U #{pg_dba} -d #{pg_db} -h #{pg_host} -A -t -c \"SELECT * from pg_extension where extname != 'plpgsql';\" | cut -d'|' -f 1") do
-        its('stdout.strip') { should match extension }
-      end
-    end
-    describe command("PGPASSWORD='#{pg_dba_password}' psql -U #{pg_dba} -d #{pg_db} -h #{pg_host} -A -t -c \"SELECT * from pg_extension where extname != 'plpgsql';\"") do
-      its('stdout.strip') { should be "" }
-    end
-  end
+#  describe.one do
+#    approved_ext.each do |extension|
+#      describe command("PGPASSWORD='#{pg_dba_password}' psql -U #{pg_dba} -d #{pg_db} -h #{pg_host} -A -t -c \"SELECT * from pg_extension where extname != 'plpgsql';\" | cut -d'|' -f 1") do
+#        its('stdout.strip') { should match extension }
+#      end
+#    end
+#    describe command("PGPASSWORD='#{pg_dba_password}' psql -U #{pg_dba} -d #{pg_db} -h #{pg_host} -A -t -c \"SELECT * from pg_extension where extname != 'plpgsql';\"") do
+#      its('stdout.strip') { should be "" }
+#    end
+#  end
+  
+  describe sql.query("select * from pg_extension where extname != \'plpgsql\';", [input('pg_db')]) do
+     its('output') { should be in input('approved_ext') }
+  end  
 end
