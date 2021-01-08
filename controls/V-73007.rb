@@ -85,8 +85,14 @@ control "V-73007" do
 
 sql = postgres_session(input('pg_dba'), input('pg_dba_password'), input('pg_host'), input('pg_port'))
 
+  installed_extensions = sql.query('select * from pg_extension where extname != \'plpgsql\';').column('extname')
+
+  installed_extensions.each do |extension|
   
-  describe sql.query('select * from pg_extension where extname != \'plpgsql\';', [input('pg_db')]) do
-     its('output') { should be_in input('approved_ext') }
+    describe "The installed extension: #{extension}" do
+      subject { extension }
+      it { should  be_in input('approved_ext') }
+    end
+    
   end 
 end
