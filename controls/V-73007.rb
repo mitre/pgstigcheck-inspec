@@ -82,6 +82,9 @@ control "V-73007" do
 #      its('stdout.strip') { should be "" }
 #    end
 #  end
+
+sql = postgres_session(input('pg_dba'), input('pg_dba_password'), input('pg_host'), input('pg_port'))
+
   
   describe sql.query('select * from pg_extension where extname != \'plpgsql\';', [input('pg_db')]) do
      its('output') { should be_in input('approved_ext') }
