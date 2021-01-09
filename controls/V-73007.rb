@@ -85,26 +85,19 @@ control "V-73007" do
 
 sql = postgres_session(input('pg_dba'), input('pg_dba_password'), input('pg_host'), input('pg_port'))
 
-  installed_extensions = sql.query('select extname from pg_extension where extname != \'plpgsql\';').output
-#  installed_extensions = sql.query('select extname from pg_extension;').output
-  
-    if installed_extensions.kind_of?(Array)
+installed_extensions = sql.query('select extname from pg_extension where extname != \'plpgsql\';').lines
+
+  unless installed_extensions.empty?
     installed_extensions.each do |extension|
-      describe "(array) The installed extension: #{extension}" do
+      describe "The installed extension: #{extension}" do
         subject { extension }
           it { should  be_in input('approved_ext') }
       end
     end
-#  elseif installed_extensions.empty?
-#      describe "(empty) The installed extension: #{installed_extensions}" do
-#        subject { installed_extensions }
-#          it { should == '' }
-#      end
   else
-      describe "(string) The installed extension: #{installed_extensions}" do
+      describe "The list of installed extensions" do
         subject { installed_extensions }
-          it { should  be_in input('approved_ext') }
+          it { should be_empty }
       end
   end
-  
 end
