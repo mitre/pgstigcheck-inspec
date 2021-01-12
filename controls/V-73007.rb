@@ -60,29 +60,6 @@ control "V-73007" do
 
   Note: It is recommended that plpgsql not be removed."
 
-# @todo executed the SELECT statement in psql, got no output, psql not hardended? fix the stdout code, as needed.
-
-# dbs = nil
-# db = nil
-
-# if !("#{pg_db}".to_s.empty?)
-#  db = ["#{pg_db}"]
-#  dbs = db.map { |x| "-d #{x}" }.join(' ')
-# end
-
-# @todo need SSP data to compare that no extensions are present that are not approved?
-
-#  describe.one do
-#    approved_ext.each do |extension|
-#      describe command("PGPASSWORD='#{pg_dba_password}' psql -U #{pg_dba} -d #{pg_db} -h #{pg_host} -A -t -c \"SELECT * from pg_extension where extname != 'plpgsql';\" | cut -d'|' -f 1") do
-#        its('stdout.strip') { should match extension }
-#      end
-#    end
-#    describe command("PGPASSWORD='#{pg_dba_password}' psql -U #{pg_dba} -d #{pg_db} -h #{pg_host} -A -t -c \"SELECT * from pg_extension where extname != 'plpgsql';\"") do
-#      its('stdout.strip') { should be "" }
-#    end
-#  end
-
 sql = postgres_session(input('pg_dba'), input('pg_dba_password'), input('pg_host'), input('pg_port'))
 
 installed_extensions = sql.query('select extname from pg_extension where extname != \'plpgsql\';').lines
